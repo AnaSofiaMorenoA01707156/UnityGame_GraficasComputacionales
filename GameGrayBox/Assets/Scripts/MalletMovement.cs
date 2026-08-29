@@ -8,7 +8,8 @@ public class Mallet : MonoBehaviour
 
     private Vector3 origen;
     private Rigidbody rb;
-    private bool cayendo = false;
+    private bool golpeando = false;
+    public float downfall = -30f;
 
 
     void Start()
@@ -19,7 +20,7 @@ public class Mallet : MonoBehaviour
 
     void Update()
     {
-        if (!cayendo)
+        if (!golpeando)
         {
             float desfase = Mathf.PingPong(Time.time * velocidad, alcance * 2f) - alcance;
             transform.position = origen + new Vector3(desfase, 0f, 0f);
@@ -32,8 +33,7 @@ public class Mallet : MonoBehaviour
 
     public void Martillar()
     {
-        cayendo = true;
-        float downfall = -10f;
+        golpeando = true;
         transform.position = transform.position + new Vector3(0f, downfall, 0f);
 
     }
