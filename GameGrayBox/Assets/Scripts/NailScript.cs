@@ -4,6 +4,7 @@ public class NailScript : MonoBehaviour
 {
     private bool golpeado = false;
     public float clavadoAbajo = -0.2f;
+    public ParticleSystem particulas;
     void OnTriggerEnter(Collider other)
     {
         //si choca con el martillo
@@ -14,6 +15,7 @@ public class NailScript : MonoBehaviour
                 if (!golpeado) //si no ha sido golpeado
                 {
                     golpeado = true; //ya fue golpeado
+                    particulas.Play();
                     transform.position = transform.position + new Vector3(0f, clavadoAbajo, 0f); //se baja para mostrarse clavado
                     ManagerScript manager = Object.FindFirstObjectByType<ManagerScript>();
                     if (manager != null) manager.Clavar();
