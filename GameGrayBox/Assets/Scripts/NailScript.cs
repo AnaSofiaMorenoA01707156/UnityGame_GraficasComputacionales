@@ -26,8 +26,8 @@ public class NailScript : MonoBehaviour
                 {
                     golpeado = true; //ya fue golpeado
                     transform.position = transform.position + new Vector3(0f, clavadoAbajo, 0f); //se baja para mostrarse clavado
-                    //GameManager manager = Object.FindFirstObjectByType<GameManager>();
-                    //if (manager != null) manager.Nailed();
+                    ManagerScript manager = Object.FindFirstObjectByType<ManagerScript>();
+                    if (manager != null) manager.Clavar();
                 }
                 mallet.golpeResuelto = true;
                 mallet.RegresarArriba(); //manda al martillo a regresar a su posición inicial

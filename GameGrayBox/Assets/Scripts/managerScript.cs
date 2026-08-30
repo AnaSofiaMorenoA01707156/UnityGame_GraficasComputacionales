@@ -1,11 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class ManagerScript : MonoBehaviour
 {
     public int clavos = 2;
-    private int clavados = 0;
+    public static int clavados{get; private set;}
+    public static Action cambioClavados;
     private bool gameOver = false;
+    void Awake()
+    {
+        clavados = 0;
+    }
     public void OnEnable()
     {
         TimeManagerScript.cambioContador += revisarTiempo;
@@ -24,6 +30,7 @@ public class ManagerScript : MonoBehaviour
         if (gameOver) return;
 
         clavados++;
+        cambioClavados?.Invoke();
         //mostrar retroalimentación (texto)
         if (TablaLista)
         {
@@ -50,6 +57,7 @@ public class ManagerScript : MonoBehaviour
         if (gameOver) return;
         gameOver = true;
         //retro de ganar
+        Debug.Log("G");
     }
 
     public void Lose()
@@ -57,6 +65,7 @@ public class ManagerScript : MonoBehaviour
         if (gameOver) return;
         gameOver = true;
         //retro de perder y volver a intentar
+        Debug.Log("P");
         Invoke("Reiniciar", 4f); //reiniciar el juego después de mostrar retroalimentación
     }
 
