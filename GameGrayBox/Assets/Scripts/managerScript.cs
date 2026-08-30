@@ -4,7 +4,7 @@ using System;
 
 public class ManagerScript : MonoBehaviour
 {
-    public int clavos = 2;
+    public int clavos = 7;
     public static int clavados{get; private set;}
     public static Action cambioClavados;
     private bool gameOver = false;

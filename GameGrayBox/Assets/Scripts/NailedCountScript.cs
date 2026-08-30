@@ -14,6 +14,6 @@ public class NailedCountScript : MonoBehaviour
     }
     private void ActualizarContador()
     {
-        Count.text = $"{ManagerScript.clavados.ToString("0")}/2";
+        Count.text = $"{ManagerScript.clavados.ToString("0")}/7";
     }
 }

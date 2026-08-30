@@ -53,7 +53,7 @@ public class Mallet : MonoBehaviour
         Vector3 destino = posActual + new Vector3(0f, caida, 0f); //final de la caída
 
         float contador = 0f;
-        float tiempoMovimiento = 0.5f; //tiempo para caer
+        float tiempoMovimiento = 0.2f; //tiempo para caer
         //mientras siga el tiempo de caída y no haya golpeado nada aún
         while(contador < tiempoMovimiento && !golpeResuelto){
             //mover con física de rigidbody
