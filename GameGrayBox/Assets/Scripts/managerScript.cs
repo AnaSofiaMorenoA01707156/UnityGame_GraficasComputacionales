@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class managerScript : MonoBehaviour
+public class ManagerScript : MonoBehaviour
 {
     public int clavos = 2;
     private int clavados = 0;
     private bool gameOver = false;
 
-    public void TablaLista //si ya se han clavado todos los clavos (condición de ganar)
+    public bool TablaLista //si ya se han clavado todos los clavos (condición de ganar)
     {
         get { return clavados >= clavos; }
     }
@@ -18,7 +18,7 @@ public class managerScript : MonoBehaviour
 
         clavados++;
         //mostrar retroalimentación (texto)
-        if (tablaLista)
+        if (TablaLista)
         {
             Win(); //cumple condición de ganar
         }
