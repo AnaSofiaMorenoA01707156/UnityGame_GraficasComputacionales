@@ -9,6 +9,7 @@ public class Mallet : MonoBehaviour
 
     private Vector3 origen;
     private Rigidbody rb;
+    private Animator animator;
     private bool matrillando = false; //evita que reaccione a un segundo input antes de volver a subir
     public float caida = -30f;
     public bool golpeResuelto = false; //evita que si ya golpeó el clavo reaccione si golpea después la tabla o piso
@@ -18,6 +19,7 @@ public class Mallet : MonoBehaviour
     {
         origen = transform.position; //registrar posición inicial
         rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>(); //obtener animator del Mallet
     }
 
     void Update()
@@ -36,6 +38,7 @@ public class Mallet : MonoBehaviour
     public void Martillar()
     {
         matrillando = true; //ya está martillando, no acepta otro input hasta subir
+        if (animator != null) animator.SetBool("Martillando", true);
         golpeResuelto = false; //aún no ha golpeado con algo
         StartCoroutine(MovimientoMartillar()); //corrutina para bajar y martillar
     }
@@ -44,6 +47,7 @@ public class Mallet : MonoBehaviour
     { //regresa a su posición de origen y ya puede volver a reaccionar a input (matrillar)
         transform.position = origen;
         matrillando = false;
+        if (animator != null) animator.SetBool("Martillando", false);
     }
 
     //corrutina para martillar (bajar), usando movimiento de rigidbody con tiempo de física
@@ -53,7 +57,7 @@ public class Mallet : MonoBehaviour
         Vector3 destino = posActual + new Vector3(0f, caida, 0f); //final de la caída
 
         float contador = 0f;
-        float tiempoMovimiento = 0.2f; //tiempo para caer
+        float tiempoMovimiento = 0.25f; //tiempo para caer
         //mientras siga el tiempo de caída y no haya golpeado nada aún
         while(contador < tiempoMovimiento && !golpeResuelto){
             //mover con física de rigidbody
