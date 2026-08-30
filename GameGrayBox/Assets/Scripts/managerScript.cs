@@ -7,6 +7,7 @@ public class ManagerScript : MonoBehaviour
     public int clavos = 7;
     public static int clavados{get; private set;} //num de clavos clavados de vista pública
     public static Action cambioClavados; //cambia el num de clavos clavados y detona cambio del UI
+    public static Action<bool> RetroFin; //detona muestra del texto de ganar/perder (WinLooseTextScript)
     private bool gameOver = false; //variable para exclusividad de win vs. loose
     void Awake()
     {
@@ -14,11 +15,11 @@ public class ManagerScript : MonoBehaviour
     }
     public void OnEnable()
     {
-        TimeManagerScript.cambioContador += revisarTiempo; //se suscribe a cambioContador
+        TimeManagerScript.cambioContador += RevisarTiempo; //se suscribe a cambioContador
     }
     public void OnDisable()
     {
-        TimeManagerScript.cambioContador -= revisarTiempo; //se desuscribe a cambioContador
+        TimeManagerScript.cambioContador -= RevisarTiempo; //se desuscribe a cambioContador
     }
     public bool TablaLista //si ya se han clavado todos los clavos (condición de ganar)
     {
@@ -36,7 +37,7 @@ public class ManagerScript : MonoBehaviour
             Win();
         }
     }
-    private void revisarTiempo()
+    private void RevisarTiempo()
     {
         if (TimeManagerScript.segundos == 0) //el contador llegó a 0 (se acabó el tiempo)
         {
@@ -63,7 +64,7 @@ public class ManagerScript : MonoBehaviour
         //detener timemanager y su contador (UI)
         timer.enabled = false;
         //retro de ganar
-        Debug.Log("G");
+        RetroFin?.Invoke(true);
     }
 
     public void Lose()
@@ -78,7 +79,7 @@ public class ManagerScript : MonoBehaviour
         //detener timemanager y su contador (UI)
         timer.enabled = false;
         //retro de perder y volver a intentar
-        Debug.Log("P");
+        RetroFin?.Invoke(false);
         Invoke("Reiniciar", 4f); //reiniciar el juego después de mostrar retroalimentación
     }
 
