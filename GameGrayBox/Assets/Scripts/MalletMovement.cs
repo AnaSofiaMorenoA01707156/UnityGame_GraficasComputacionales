@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Mallet : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Mallet : MonoBehaviour
     void Start()
     {
         origen = transform.position; //registrar posición inicial
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -35,12 +37,32 @@ public class Mallet : MonoBehaviour
     {
         matrillando = true;
         golpeResuelto = false;
-        transform.position = transform.position + new Vector3(0f, caida, 0f); //baja para martillar
+        StartCoroutine(MovimientoMartillar()); //corrutina para bajar y martillar
     }
 
     public void RegresarArriba()
     { //regresa a su posición de origen y ya puede volver a reaccionar a input (matrillar)
         transform.position = origen;
         matrillando = false;
+    }
+
+    private IEnumerator MovimientoMartillar()
+    {
+        Vector3 posActual = transform.position;
+        Vector3 destino = posActual + new Vector3(0f, caida, 0f);
+
+        float contador = 0f;
+        float tiempoMovimiento = 0.5f; //tiempo para caer
+        //mientras siga el tiempo de caída y no haya golpeado nada aún
+        while(contador < tiempoMovimiento && !golpeResuelto){
+            //mover con física de rigidbody
+            rb.MovePosition(Vector3.Lerp(posActual,destino,contador/tiempoMovimiento));
+            contador += Time.fixedDeltaTime; //usar tiempo de física de Unity
+            yield return new WaitForFixedUpdate();
+        }
+        if (!golpeResuelto) //si no chocó con nada, aún así regresa arriba
+        {
+            RegresarArriba();
+        }
     }
 }
