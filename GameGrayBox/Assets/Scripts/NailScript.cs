@@ -4,17 +4,6 @@ public class NailScript : MonoBehaviour
 {
     private bool golpeado = false;
     public float clavadoAbajo = -0.2f;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void OnTriggerEnter(Collider other)
     {
         //si choca con el martillo

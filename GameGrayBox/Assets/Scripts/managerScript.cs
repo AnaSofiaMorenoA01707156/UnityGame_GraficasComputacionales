@@ -5,20 +5,20 @@ using System;
 public class ManagerScript : MonoBehaviour
 {
     public int clavos = 7;
-    public static int clavados{get; private set;}
-    public static Action cambioClavados;
-    private bool gameOver = false;
+    public static int clavados{get; private set;} //num de clavos clavados de vista pública
+    public static Action cambioClavados; //cambia el num de clavos clavados y detona cambio del UI
+    private bool gameOver = false; //variable para exclusividad de win vs. loose
     void Awake()
     {
         clavados = 0;
     }
     public void OnEnable()
     {
-        TimeManagerScript.cambioContador += revisarTiempo;
+        TimeManagerScript.cambioContador += revisarTiempo; //se suscribe a cambioContador
     }
     public void OnDisable()
     {
-        TimeManagerScript.cambioContador -= revisarTiempo;
+        TimeManagerScript.cambioContador -= revisarTiempo; //se desuscribe a cambioContador
     }
     public bool TablaLista //si ya se han clavado todos los clavos (condición de ganar)
     {
@@ -28,24 +28,23 @@ public class ManagerScript : MonoBehaviour
     public void Clavar() //llamada por el clavo al ser martillado
     {
         if (gameOver) return;
-
         clavados++;
         cambioClavados?.Invoke();
         //mostrar retroalimentación (texto)
-        if (TablaLista)
+        if (TablaLista) //cumple condición de ganar
         {
-            Win(); //cumple condición de ganar
+            Win();
         }
     }
     private void revisarTiempo()
     {
-        if (TimeManagerScript.segundos == 0)
+        if (TimeManagerScript.segundos == 0) //el contador llegó a 0 (se acabó el tiempo)
         {
-            if (TablaLista)
+            if (TablaLista) //cumple condición de ganar
             {
                 Win();
             }
-            else
+            else //NO cumple condición de ganar
             {
                 Lose();
             }
@@ -56,6 +55,13 @@ public class ManagerScript : MonoBehaviour
     {
         if (gameOver) return;
         gameOver = true;
+        TimeManagerScript timer = FindFirstObjectByType<TimeManagerScript>();
+        Mallet mallet = FindFirstObjectByType<Mallet>();
+        //detener movimiento y reacción de martillo
+        mallet.StopAllCoroutines();
+        mallet.enabled = false;
+        //detener timemanager y su contador (UI)
+        timer.enabled = false;
         //retro de ganar
         Debug.Log("G");
     }
@@ -64,13 +70,20 @@ public class ManagerScript : MonoBehaviour
     {
         if (gameOver) return;
         gameOver = true;
+        TimeManagerScript timer = FindFirstObjectByType<TimeManagerScript>();
+        Mallet mallet = FindFirstObjectByType<Mallet>();
+        //detener movimiento y reacción de martillo
+        mallet.StopAllCoroutines();
+        mallet.enabled = false;
+        //detener timemanager y su contador (UI)
+        timer.enabled = false;
         //retro de perder y volver a intentar
         Debug.Log("P");
         Invoke("Reiniciar", 4f); //reiniciar el juego después de mostrar retroalimentación
     }
 
     void Reiniciar()
-    {
+    { //reiniciar la escena
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
