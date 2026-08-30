@@ -9,7 +9,7 @@ public class TimeManagerScript : MonoBehaviour
     private float decrementador;
     void Awake()
     {
-        segundos = 30; //contador de 30 segundos
+        segundos = 20; //contador de 20 segundos
         decrementador = segundoNormal;
     }
     void Update()
