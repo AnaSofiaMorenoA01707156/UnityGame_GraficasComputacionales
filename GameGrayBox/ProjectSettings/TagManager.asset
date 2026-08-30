@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Plano
+  - Mallet
   layers:
   - Default
   - TransparentFX

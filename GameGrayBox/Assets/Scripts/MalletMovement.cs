@@ -8,41 +8,39 @@ public class Mallet : MonoBehaviour
 
     private Vector3 origen;
     private Rigidbody rb;
-    private bool golpeando = false;
-    public float downfall = -30f;
+    private bool matrillando = false;
+    public float caida = -30f;
+    public bool golpeResuelto = false; //evita que si ya golpeó el clavo reaccione si golpea después la tabla o piso
 
 
     void Start()
     {
-        origen = transform.position;
-
+        origen = transform.position; //registrar posición inicial
     }
 
     void Update()
     {
-        if (!golpeando)
+        if (!matrillando) //movimiento continuo de lado a lado mientras no matrille
         {
             float desfase = Mathf.PingPong(Time.time * velocidad, alcance * 2f) - alcance;
             transform.position = origen + new Vector3(desfase, 0f, 0f);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)){
+        if (Input.GetKeyDown(KeyCode.Space) && (!matrillando)){ //si no está ya matrillando reacciona al input
             Martillar();
         }
     }
 
     public void Martillar()
     {
-        golpeando = true;
-        transform.position = transform.position + new Vector3(0f, downfall, 0f);
-
+        matrillando = true;
+        golpeResuelto = false;
+        transform.position = transform.position + new Vector3(0f, caida, 0f); //baja para martillar
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Plano"))
-        {
-            Debug.Log("Perdiste");
-        }
+    public void RegresarArriba()
+    { //regresa a su posición de origen y ya puede volver a reaccionar a input (matrillar)
+        transform.position = origen;
+        matrillando = false;
     }
 }
