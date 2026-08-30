@@ -4,12 +4,12 @@ using System.Collections;
 public class Mallet : MonoBehaviour
 {
 
-    public float velocidad = 9f;   // qué tan rápido se desplaza
+    public float velocidad = 9f;   // qué tan rápido se desplaza lado a lado
     public float alcance = 5f;     // cuántas unidades se aleja del centro
 
     private Vector3 origen;
     private Rigidbody rb;
-    private bool matrillando = false;
+    private bool matrillando = false; //evita que reaccione a un segundo input antes de volver a subir
     public float caida = -30f;
     public bool golpeResuelto = false; //evita que si ya golpeó el clavo reaccione si golpea después la tabla o piso
 
@@ -24,8 +24,8 @@ public class Mallet : MonoBehaviour
     {
         if (!matrillando) //movimiento continuo de lado a lado mientras no matrille
         {
-            float desfase = Mathf.PingPong(Time.time * velocidad, alcance * 2f) - alcance;
-            transform.position = origen + new Vector3(desfase, 0f, 0f);
+            float desfase = Mathf.PingPong(Time.time * velocidad, alcance * 2f) - alcance; //obtener desfase
+            transform.position = origen + new Vector3(desfase, 0f, 0f); //movimiento con desfase
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && (!matrillando)){ //si no está ya matrillando reacciona al input
@@ -35,8 +35,8 @@ public class Mallet : MonoBehaviour
 
     public void Martillar()
     {
-        matrillando = true;
-        golpeResuelto = false;
+        matrillando = true; //ya está martillando, no acepta otro input hasta subir
+        golpeResuelto = false; //aún no ha golpeado con algo
         StartCoroutine(MovimientoMartillar()); //corrutina para bajar y martillar
     }
 
@@ -46,10 +46,11 @@ public class Mallet : MonoBehaviour
         matrillando = false;
     }
 
+    //corrutina para martillar (bajar), usando movimiento de rigidbody con tiempo de física
     private IEnumerator MovimientoMartillar()
     {
         Vector3 posActual = transform.position;
-        Vector3 destino = posActual + new Vector3(0f, caida, 0f);
+        Vector3 destino = posActual + new Vector3(0f, caida, 0f); //final de la caída
 
         float contador = 0f;
         float tiempoMovimiento = 0.5f; //tiempo para caer

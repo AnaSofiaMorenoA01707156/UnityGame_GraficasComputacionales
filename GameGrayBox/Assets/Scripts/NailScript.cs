@@ -17,11 +17,11 @@ public class NailScript : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        //si choca con el martillo sin que este ya haya chocado con algo más antes
+        //si choca con el martillo
         if (other.CompareTag("Mallet"))
         {
             Mallet mallet = Object.FindFirstObjectByType<Mallet>();
-            if (!mallet.golpeResuelto){
+            if (!mallet.golpeResuelto){ //el martillo no ha chocado con algo más antes en esa bajada
                 if (!golpeado) //si no ha sido golpeado
                 {
                     golpeado = true; //ya fue golpeado

@@ -15,11 +15,11 @@ public class PlankScript : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        //si choca con el martillo sin que este ya haya chocado con algo más antes
+        //si choca con el martillo
         if (other.CompareTag("Mallet"))
         {
             Mallet mallet = Object.FindFirstObjectByType<Mallet>();
-            if (!mallet.golpeResuelto)
+            if (!mallet.golpeResuelto) //el martillo no ha chocado con algo más antes en esa bajada
             {
             mallet.golpeResuelto = true;
             mallet.RegresarArriba(); //manda al martillo a regresar a su posición inicial
